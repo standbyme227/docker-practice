@@ -1,0 +1,2 @@
+DJango<2.1
+raven<6.7
