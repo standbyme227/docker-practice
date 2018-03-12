@@ -33,7 +33,7 @@ RUN         cp /srv/project/.config/${BUILD_MODE}/supervisord.conf /etc/supervis
 
 
 
-#CMD         pkill nginx; supervisord -n
+CMD         pkill nginx; supervisord -n
 
 
 
