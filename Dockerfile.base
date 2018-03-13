@@ -1,0 +1,14 @@
+FROM        python:3.6.4-slim
+
+
+RUN         apt-get -y update
+RUN         apt-get -y dist-upgrade
+RUN         apt-get -y install nginx supervisor
+RUN         apt-get -y install build-essential
+
+COPY        .requirements /srv/project/.requirements
+WORKDIR     /srv/project
+RUN         pip install -r .requirements/production.txt
+
+
+

@@ -1,0 +1,42 @@
+FROM        python:3.6.4-slim
+
+
+RUN         apt-get -y update
+RUN         apt-get -y dist-upgrade
+RUN         apt-get -y install nginx supervisor
+RUN         apt-get -y install build-essential
+
+COPY        .requirements /srv/project/.requirements
+WORKDIR     /srv/project
+RUN         pip install -r .requirements/production.txt
+
+ENV         BUILD_MODE production
+ENV         DJANGO_SETTINGS_MODULE config.settings.${BUILD_MODE}
+
+COPY        . /srv/project
+# 이렇게 하면 pip install도 다 시 덮혀지지 않는건가 싶었지만
+# 생각해보면 현재 pip install은 pyenv에 된거라 크게 상관이 없다.
+# 그렇기에 폴더를 덮어씌워야 같은 경로로 지정이된다
+
+RUN         cp -f /srv/project/.config/${BUILD_MODE}/nginx.conf     /etc/nginx/nginx.conf &&\
+            cp -f /srv/project/.config/${BUILD_MODE}/nginx-app.conf /etc/nginx/sites-available/ &&\
+            rm -f /etc/nginx/sites-enabled/* &&\
+            ln -sf /etc/nginx/sites-available/nginx-app.conf /etc/nginx/sites-enabled/
+
+RUN         cp /srv/project/.config/${BUILD_MODE}/supervisord.conf /etc/supervisor/conf.d/
+
+# ENV         export DJANGO_SETTINGS_MODULE=${DJANGO_SETTINGS_MODULE}
+# RUN         python manage.py migrate && python manage.py createsu
+# local에서라면 sqlite를 사용하기 때문에 매번 해야하는게 맞지만
+# dev나 production은 db를 rds로 관리하기 때문에
+# 굳이 매번 할 필요가 없다.
+
+
+
+CMD         pkill nginx; supervisord -n
+
+
+
+
+
+
