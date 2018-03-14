@@ -6,5 +6,5 @@ class StaticFilesStorage(S3Boto3Storage):
     default_acl = 'public-read'
 
 
-class DefaultFilesStorage(S3Boto3Storage):
+class DefaultFileStorage(S3Boto3Storage):
     location = 'media'
