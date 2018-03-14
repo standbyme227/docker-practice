@@ -91,7 +91,7 @@ def set_config(obj, module_name=None , start=False):
         # list아이템을 순회하며
         for index, item in enumerate(obj):
             obj[index] = eval_obj(item)
-    print('== End ==')
+    # print('== End ==')
 
 
 setattr(sys.modules[__name__], 'raven', importlib.import_module('raven'))
