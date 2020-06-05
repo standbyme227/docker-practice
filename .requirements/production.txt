@@ -1,5 +1,5 @@
 boto3<1.7
-DJango<2.1
+DJango<2.3
 django-storages<1.7
 raven<6.7
 psycopg2-binary<2.8
